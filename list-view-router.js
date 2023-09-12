@@ -2,13 +2,14 @@ const express = require("express");
 const listViewRouter = express.Router();
 
 const taskList = require("./data");
+listViewRouter.use(express.json());
 
 const validateTask = (req, res, next) =>{
     const validate = req.params.complete;
     if(validate === "completado"){
-        return res.status(404).send({message: "Recurso no encontrado por favor intente con completed"});
+        return res.status(404).send({message: "Id not founded, please try with the Id word completed"});
     } else if (validate === "no-completado"){
-        return res.status(404).send({message: "Recurso no encontrado por favor intente con not-completed"});
+        return res.status(404).send({message: "Id not founded, please try with the Id word not-completed"});
     }
     next();
 
@@ -19,7 +20,7 @@ listViewRouter.get("/tasks", (req, res)=>{
 
 });
 
-listViewRouter.get("/completeTask/:complete", validateTask,(req, res)=>{
+listViewRouter.get("/task/:complete", validateTask,(req, res)=>{
     const typeTask = req.params.complete;
     const tasksView = taskList.tasks.filter(element => element.isCompleted === typeTask);
 

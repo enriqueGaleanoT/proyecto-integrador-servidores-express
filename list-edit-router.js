@@ -4,7 +4,31 @@ const taskList = require("./data");
 
 listEditRouter.use(express.json());
 
-listEditRouter.get("/view-tasks", (req, res)=>{
+const validateMethods = (req, res, next) =>{
+    if(req.method === "GET"){
+        next();
+    }else{
+        return res.status(404).send({message: "Se requiere un metodo GET"});
+    }
+    if(req.method === "POST"){
+        next();
+    }else{
+        return res.status(404).send({message: "Se requiere un metodo GET"});
+    }
+    if(req.method === "PUT"){
+        next();
+    }else{
+        return res.status(404).send({message: "Se requiere un metodo GET"});
+    }
+    if(req.method === "DELETE"){
+        next();
+    }else{
+        return res.status(404).send({message: "Se requiere un metodo GET"});
+    }
+};
+
+
+listEditRouter.get("/task", (req, res)=>{
     res.status(200).json(taskList.tasks);
 });
 
@@ -12,7 +36,7 @@ listEditRouter.post("/add-task", (req, res)=>{
     const createTask = req.body;
     console.log(createTask);
     taskList.tasks.push(createTask);
-    res.status(200).send({message: "Tarea creada exitosamente xD"});
+    res.status(200).send({message: "Task added"});
 });
 
 listEditRouter.put("/task/:id", (req, res)=>{
@@ -21,7 +45,7 @@ listEditRouter.put("/task/:id", (req, res)=>{
     console.log(taskFindId);
 
     if (taskFindId === -1) {
-        return res.status(404).send({message: "Task no encontrada"});
+        return res.status(404).send({message: "Task not found"});
     }
     const newTask = req.body;
     taskList.tasks[taskFindId]= {...taskList.tasks[taskFindId], ...newTask};
@@ -34,7 +58,7 @@ listEditRouter.delete("/task/:id", (req, res)=>{
     const taskIdDeleteFind = taskList.tasks.findIndex((element) => element.id === taskIdDelete);
 
     if (!taskIdDeleteFind === -1) {
-        return res.status(404).send({message: "Tarea no encontrada, no se puede eliminar"});
+        return res.status(404).send({message: "Task not found, cannot eliminate"});
     }
     const taskDeleted = taskList.tasks.splice(taskIdDeleteFind, 1);
     console.log(taskDeleted[0]);
