@@ -4,19 +4,7 @@ const taskList = require("./data");
 
 listEditRouter.use(express.json());
 
-
-// const taskListEdit = {
-//     taskListEdit: [
-//         {
-//             "id": "1",
-//             "isCompleted":"completed",
-//             "description":"Walk the dog 1"
-//         }
-//     ]
-// }
-
 const validateMethodPOST = (req, res, next) =>{
-    // const bodyPOST = req.body.value;'
     const dataPOST = req.body;
     const {id, description, isCompleted} = req.body;
     if(Object.keys(req.body).length === 0){
@@ -60,7 +48,7 @@ const validateMethodPUT = (req, res, next) =>{
 const validarMetodos = (req, res, next)=>{
     const metodos = ['GET', 'POST', 'PUT', 'DELETE '];
     if (!metodos.includes(req.method)) {
-        return res.status(400).send({message: "You need a get method"});
+        return res.status(400).send({message: "This Method is not allowed"});
     }
     next();
 
