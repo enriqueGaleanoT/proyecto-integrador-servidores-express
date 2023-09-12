@@ -1,35 +1,35 @@
 const taskList = {
     tasks: [
         {
-            id:"1234561",
+            id: "1",
             isCompleted:"completed",
             description:"Walk the dog 1",
         },
         {
-            id:"1234562",
+            id: "2",
             isCompleted:"not-completed",
             description:"Do homework",
         }
         ,
         {
-            id:"1234563",
+            id: "3",
             isCompleted:"completed",
             description:"wash dishes",
         }
         ,
         {
-            id:"123454",
+            id: "4",
             isCompleted:"not-completed",
             description:"Get Gas",
         }
         ,
         {
-            id:"123455",
+            id: "5",
             isCompleted:"completed",
             description:"check task list",
         },
         {
-            id:"123456",
+            id: "6",
             isCompleted:"not-completed",
             description:"Walk the dog",
         }
