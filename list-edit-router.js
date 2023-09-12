@@ -4,20 +4,70 @@ const taskList = require("./data");
 
 listEditRouter.use(express.json());
 
+
+// const taskListEdit = {
+//     taskListEdit: [
+//         {
+//             "id": "1",
+//             "isCompleted":"completed",
+//             "description":"Walk the dog 1"
+//         }
+//     ]
+// }
+
 const validateMethodPOST = (req, res, next) =>{
-    // const bodyPOST = req.body.value;
-    if(req.method === "POST" && Object.keys(req.body).length === 0){
-        console.log("entra aqui");
-        return res.status(400).send({error: "El cuerpo no puede estar vacio"});
-    }
+    // const bodyPOST = req.body.value;'
+    const dataPOST = req.body;
     const {id, description, isCompleted} = req.body;
+    if(Object.keys(req.body).length === 0){
+        console.log("entra aqui");
+        return res.status(400).send({error: "Dont leave the body empty"});
+    } else if (!id || !description || !isCompleted) {
+        return res.status(400).send({error: "You need the appropriate JSON attributes"});
+    }
+
+    if (dataPOST.id === " " || dataPOST.id === "") {
+        return res.status(400).send({error: "Attribute Id is not filled"});
+    }else if (dataPOST.isCompleted === " " || dataPOST.isCompleted === ""){
+        return res.status(400).send({error: "Attribute isCompleted is not filled"});
+    }else if(dataPOST.description === " " || dataPOST.description === ""){
+        return res.status(400).send({error: "Attribute description is not filled"});
+    }
     console.log(id + " " + isCompleted +  " " +  description);
-   
+    next();
+};
+
+const validateMethodPUT = (req, res, next) =>{
+    const dataPUT = req.body;
+    const {id, description, isCompleted} = req.body;
+
     if (!id || !description || !isCompleted) {
-        return res.status(400).send({error: "You need the appropriate attributes"});
+        return res.status(400).send({error: "You need the appropriate JSON attributes"});
+    }
+
+    if (Object.keys(req.body).length === 0) {
+        return res.status(400).send({error: "Dont leave the body empty"})
+    }else if (dataPUT.id === " " || dataPUT.id === "") {
+        return res.status(400).send({error: "Attribute Id is not filled"});
+    }else if (dataPUT.isCompleted === " " || dataPUT.isCompleted === ""){
+        return res.status(400).send({error: "Attribute isCompleted is not filled"});
+    }else if(dataPUT.description === " " || dataPUT.description === ""){
+        return res.status(400).send({error: "Attribute description is not filled"});
     }
     next();
 };
+
+const validarMetodos = (req, res, next)=>{
+    const metodos = ['GET', 'POST', 'PUT', 'DELETE '];
+    if (!metodos.includes(req.method)) {
+        return res.status(400).send({message: "You need a get method"});
+    }
+    next();
+
+}
+
+listEditRouter.use(validarMetodos);
+
 
 
 listEditRouter.get("/task",  (req, res)=>{
@@ -33,7 +83,7 @@ listEditRouter.post("/task", validateMethodPOST,(req, res)=>{
     res.status(200).send({message: "Task added"});
 });
 
-listEditRouter.put("/task/:id", (req, res)=>{
+listEditRouter.put("/task/:id", validateMethodPUT, (req, res)=>{
     const taskId = req.params.id
     const taskFindId = taskList.tasks.findIndex((element) => element.id === taskId);
     console.log(taskFindId);

@@ -15,7 +15,7 @@ const validateTask = (req, res, next) =>{
 
 }
 
-listViewRouter.get("/tasks", (req, res)=>{
+listViewRouter.get("/task", (req, res)=>{
     res.status(200).send(taskList.tasks);
 
 });
