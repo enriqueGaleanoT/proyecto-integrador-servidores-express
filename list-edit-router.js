@@ -4,35 +4,29 @@ const taskList = require("./data");
 
 listEditRouter.use(express.json());
 
-const validateMethods = (req, res, next) =>{
-    if(req.method === "GET"){
-        next();
-    }else{
-        return res.status(404).send({message: "Se requiere un metodo GET"});
+const validateMethodPOST = (req, res, next) =>{
+    // const bodyPOST = req.body.value;
+    if(req.method === "POST" && Object.keys(req.body).length === 0){
+        console.log("entra aqui");
+        return res.status(400).send({error: "El cuerpo no puede estar vacio"});
     }
-    if(req.method === "POST"){
-        next();
-    }else{
-        return res.status(404).send({message: "Se requiere un metodo GET"});
+    const {id, description, isCompleted} = req.body;
+    console.log(id + " " + isCompleted +  " " +  description);
+   
+    if (!id || !description || !isCompleted) {
+        return res.status(400).send({error: "You need the appropriate attributes"});
     }
-    if(req.method === "PUT"){
-        next();
-    }else{
-        return res.status(404).send({message: "Se requiere un metodo GET"});
-    }
-    if(req.method === "DELETE"){
-        next();
-    }else{
-        return res.status(404).send({message: "Se requiere un metodo GET"});
-    }
+    next();
 };
 
 
-listEditRouter.get("/task", (req, res)=>{
+listEditRouter.get("/task",  (req, res)=>{
     res.status(200).json(taskList.tasks);
+    const tipo = req.method;
+    console.log(tipo);
 });
 
-listEditRouter.post("/add-task", (req, res)=>{
+listEditRouter.post("/task", validateMethodPOST,(req, res)=>{
     const createTask = req.body;
     console.log(createTask);
     taskList.tasks.push(createTask);
