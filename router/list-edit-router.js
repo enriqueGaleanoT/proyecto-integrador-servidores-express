@@ -62,14 +62,14 @@ listEditRouter.get("/task",  (req, res)=>{
 });
 
 
-listEditRouter.post("/task", validateMethodPOST,(req, res)=>{
+listEditRouter.post("/add-task", validateMethodPOST,(req, res)=>{
     const createTask = req.body;
     console.log(createTask);
     taskList.tasks.push(createTask);
     res.status(200).send({message: "Task added"});
 });
 
-listEditRouter.put("/task/:id", validateMethodPUT, (req, res)=>{
+listEditRouter.put("/update-task/:id", validateMethodPUT, (req, res)=>{
     const taskId = req.params.id
     const taskFindId = taskList.tasks.findIndex((element) => element.id === taskId);
     console.log(taskFindId);
@@ -83,7 +83,7 @@ listEditRouter.put("/task/:id", validateMethodPUT, (req, res)=>{
 
 });
 
-listEditRouter.delete("/task/:id", (req, res)=>{
+listEditRouter.delete("/delete-task/:id", (req, res)=>{
     const taskIdDelete = req.params.id;
     const taskIdDeleteFind = taskList.tasks.findIndex((element) => element.id === taskIdDelete);
     console.log(taskIdDeleteFind);
