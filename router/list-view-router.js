@@ -1,7 +1,6 @@
 const express = require("express");
 const listViewRouter = express.Router();
-
-const taskList = require("./data");
+const taskList = require("../data");
 listViewRouter.use(express.json());
 
 const validateTask = (req, res, next) =>{

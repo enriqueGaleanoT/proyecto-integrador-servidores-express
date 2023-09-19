@@ -1,7 +1,6 @@
 const express = require("express");
 const listEditRouter = express.Router();
-const taskList = require("./data");
-
+const taskList = require("../data");
 listEditRouter.use(express.json());
 
 const validateMethodPOST = (req, res, next) =>{
@@ -9,17 +8,17 @@ const validateMethodPOST = (req, res, next) =>{
     const {id, description, isCompleted} = req.body;
     if(Object.keys(req.body).length === 0){
         console.log("entra aqui");
-        return res.status(400).send({error: "Dont leave the body empty"});
+        return res.status(404).send({error: "Dont leave the body empty"});
     } else if (!id || !description || !isCompleted) {
-        return res.status(400).send({error: "You need the appropriate JSON attributes"});
+        return res.status(404).send({error: "You need the appropriate JSON attributes"});
     }
 
-    if (dataPOST.id === " " || dataPOST.id === "") {
-        return res.status(400).send({error: "Attribute Id is not filled"});
+    if ((dataPOST.id === " ") || (dataPOST.id === "")) {
+        return res.status(404).send({error: "Attribute Id is not filled"});
     }else if (dataPOST.isCompleted === " " || dataPOST.isCompleted === ""){
-        return res.status(400).send({error: "Attribute isCompleted is not filled"});
+        return res.status(404).send({error: "Attribute isCompleted is not filled"});
     }else if(dataPOST.description === " " || dataPOST.description === ""){
-        return res.status(400).send({error: "Attribute description is not filled"});
+        return res.status(404).send({error: "Attribute description is not filled"});
     }
     console.log(id + " " + isCompleted +  " " +  description);
     next();
@@ -30,29 +29,29 @@ const validateMethodPUT = (req, res, next) =>{
     const {id, description, isCompleted} = req.body;
 
     if (!id || !description || !isCompleted) {
-        return res.status(400).send({error: "You need the appropriate JSON attributes"});
+        return res.status(404).send({error: "You need the appropriate JSON attributes"});
     }
 
     if (Object.keys(req.body).length === 0) {
-        return res.status(400).send({error: "Dont leave the body empty"})
+        return res.status(404).send({error: "Dont leave the body empty"})
     }else if (dataPUT.id === " " || dataPUT.id === "") {
-        return res.status(400).send({error: "Attribute Id is not filled"});
+        return res.status(404).send({error: "Attribute Id is not filled"});
     }else if (dataPUT.isCompleted === " " || dataPUT.isCompleted === ""){
-        return res.status(400).send({error: "Attribute isCompleted is not filled"});
+        return res.status(404).send({error: "Attribute isCompleted is not filled"});
     }else if(dataPUT.description === " " || dataPUT.description === ""){
-        return res.status(400).send({error: "Attribute description is not filled"});
+        return res.status(404).send({error: "Attribute description is not filled"});
     }
     next();
 };
 
 const validarMetodos = (req, res, next)=>{
-    const metodos = ['GET', 'POST', 'PUT', 'DELETE '];
+    const metodos = ['GET', 'POST', 'PUT', 'DELETE'];
     if (!metodos.includes(req.method)) {
-        return res.status(400).send({message: "This Method is not allowed"});
+        return res.status(404).send({message: "This Method is not allowed"});
     }
     next();
-
 }
+
 
 listEditRouter.use(validarMetodos);
 
@@ -60,9 +59,8 @@ listEditRouter.use(validarMetodos);
 
 listEditRouter.get("/task",  (req, res)=>{
     res.status(200).json(taskList.tasks);
-    const tipo = req.method;
-    console.log(tipo);
 });
+
 
 listEditRouter.post("/task", validateMethodPOST,(req, res)=>{
     const createTask = req.body;
@@ -81,20 +79,22 @@ listEditRouter.put("/task/:id", validateMethodPUT, (req, res)=>{
     }
     const newTask = req.body;
     taskList.tasks[taskFindId]= {...taskList.tasks[taskFindId], ...newTask};
-    res.status(200).send(taskList.tasks[taskFindId]);
+    res.status(200).send({message: "Task Updated"});
 
 });
 
 listEditRouter.delete("/task/:id", (req, res)=>{
     const taskIdDelete = req.params.id;
     const taskIdDeleteFind = taskList.tasks.findIndex((element) => element.id === taskIdDelete);
-
-    if (!taskIdDeleteFind === -1) {
+    console.log(taskIdDeleteFind);
+    if (taskIdDeleteFind === -1) {
+        console.log("entra aqui");
         return res.status(404).send({message: "Task not found, cannot eliminate"});
     }
     const taskDeleted = taskList.tasks.splice(taskIdDeleteFind, 1);
     console.log(taskDeleted[0]);
     res.status(200).send(taskDeleted[0]);
+
 });
 
 
