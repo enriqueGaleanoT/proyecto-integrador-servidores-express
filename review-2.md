@@ -1,5 +1,4 @@
 # proyecto-integrador-servidores-express
-# proyecto-integrador-servidores-express
 ## ¿Qué es mi producto y para qué sirve?
 **Mi producto es una lista de tareas que esta hecha en el _Framework_ Express, sirve para que nos organicemos mejor nuestro día a día.**
 ## ¿Cuáles son las funcionalidades más importantes y por qué los usuarios las usarían?
