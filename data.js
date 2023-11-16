@@ -32,6 +32,11 @@ const taskList = {
             "id": "6",
             "isCompleted":"not-completed",
             "description":"Walk the dog"
+        },
+        {
+            "id": "7",
+            "isCompleted":"completed",
+            "description":"Ejecutar Orden 66"
         }
     ]
 };

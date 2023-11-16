@@ -1,3 +1,11 @@
+const validarMetodos = (req, res, next)=>{
+    const metodos = ['GET', 'POST', 'PUT', 'DELETE'];
+    if (!metodos.includes(req.method)) {
+        return res.status(404).send({message: "This Method is not allowed"});
+    }
+    next();
+}
+
 const validateMethodPOST = (req, res, next) =>{
     const dataPOST = req.body;
     const {id, description, isCompleted} = req.body;
@@ -38,16 +46,9 @@ const validateMethodPUT = (req, res, next) =>{
     next();
 };
 
-const validarMetodos = (req, res, next)=>{
-    const metodos = ['GET', 'POST', 'PUT', 'DELETE'];
-    if (!metodos.includes(req.method)) {
-        return res.status(404).send({message: "This Method is not allowed"});
-    }
-    next();
-}
 
-module.exports ={ 
-    validateMethodPOST,
+module.exports = { 
+    validarMetodos,
     validateMethodPUT,
-    validarMetodos
+    validateMethodPOST
 };

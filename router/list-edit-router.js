@@ -2,22 +2,22 @@ const express = require("express");
 const listEditRouter = express.Router();
 const taskList = require("../data");
 listEditRouter.use(express.json());
-const middlewaresMethods = require("../middlewares/methodValidations");
-listEditRouter.use(middlewaresMethods.validarMetodos);
+const {validateMethodPOST, validateMethodPUT, validarMetodos} = require("../middlewares/methodValidations");
+
+listEditRouter.use(validarMetodos);
 
 listEditRouter.get("/task",  (req, res)=>{
     res.status(200).json(taskList.tasks);
 });
 
-
-listEditRouter.post("/add-task", middlewaresMethods.validateMethodPOST,(req, res)=>{
+listEditRouter.post("/add-task", validateMethodPOST,(req, res)=>{
     const createTask = req.body;
     console.log(createTask);
     taskList.tasks.push(createTask);
     res.status(200).send({message: "Task added"});
 });
 
-listEditRouter.put("/update-task/:id", middlewaresMethods.validateMethodPUT, (req, res)=>{
+listEditRouter.put("/update-task/:id", validateMethodPUT, (req, res)=>{
     const taskId = req.params.id
     const taskFindId = taskList.tasks.findIndex((element) => element.id === taskId);
     console.log(taskFindId);
@@ -44,6 +44,5 @@ listEditRouter.delete("/delete-task/:id", (req, res)=>{
     res.status(200).send(taskDeleted[0]);
 
 });
-
 
 module.exports = listEditRouter;
